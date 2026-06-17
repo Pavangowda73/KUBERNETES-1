@@ -241,7 +241,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 Verify Installation
 ```bash
 kubectl get pods -n kube-system | grep aws-load-balancer-controller
-```<br>
+```
 Expected output:
 ```bash
 aws-load-balancer-controller-xxxxx   1/1 Running
@@ -259,5 +259,5 @@ this creates alb, listerner rules, target group inside aws.<br>
 delete ingress then it delete alb, listerner rules, target groups. 
 ```bash
 kubectl delete ingress microservice-ingress
-``
+```
 
