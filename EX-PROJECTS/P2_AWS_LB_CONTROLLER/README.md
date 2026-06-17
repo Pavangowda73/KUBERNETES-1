@@ -250,11 +250,11 @@ aws-load-balancer-controller-yyyyy   1/1 Running
 
 apply 3 files home-deploy.yml, offer.yml,payment.yml
 
-and finally ingress.ymal <br>
-```bash
-kubectl apply -f ingress.yaml
-```
+and finally create ingress.yml <br>
 this creates alb, listerner rules, target group inside aws.<br>
+```bash
+kubectl apply -f ingress.yml
+```
 
 delete ingress then it delete alb, listerner rules, target groups. 
 ```bash
