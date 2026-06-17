@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-deployment
+  labels:
+    app: payment-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-deploy
+  template:
+    metadata:
+      labels:
+        app: payment-deploy
+    spec:
+      containers:
+      - name: payment-deploy
+        image: pavan73384/ecommerce:payment
+        ports:
+        - containerPort: 4000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+spec:
+  selector:
+    app: payment-deploy
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+
