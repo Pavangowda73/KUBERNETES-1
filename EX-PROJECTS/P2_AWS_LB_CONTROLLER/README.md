@@ -261,3 +261,10 @@ delete ingress then it delete alb, listerner rules, target groups.
 kubectl delete ingress microservice-ingress
 ```
 
+# OIDC (OpenID Connect)
+Definition: <br>
+OIDC is a mechanism that allows an EKS pod to securely assume an AWS IAM role without storing AWS access keys inside the pod.
+
+# ServiceAccount
+Definition: <br>
+A ServiceAccount is an identity for applications (pods) running inside Kubernetes.
