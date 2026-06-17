@@ -10,7 +10,7 @@ Update the Server
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
-# Install AWS CLI
+### 1.Install AWS CLI
 Download AWS CLI
 ```bash
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -28,7 +28,7 @@ Verify
 ```bash
 aws --version
 ```
-# Install kubectl
+### 2.Install kubectl
 Download Latest Version
 ```bash
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -45,7 +45,7 @@ Verify
 ```bash
 kubectl version --client
 ```
-# Install eksctl
+### 3.Install eksctl
 Download eksctl
 ```bash
 ARCH=amd64
@@ -65,7 +65,7 @@ Verify
 ```bash
 eksctl version
 ```
-# Install Helm
+### 4.Install Helm
 Download Helm Install Script
 ```bash
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -82,7 +82,7 @@ Verify
 ```bash
 helm version
 ```
-# Configure AWS CLI
+### 5.Configure AWS CLI
 ```bash
 aws configure
 ```
@@ -128,8 +128,8 @@ IMP:If you created the EKS cluster using eksctl, delete it with:
 ```bash
 eksctl delete cluster --name <cluster-name> --region ap-south-1
 ```
-
-# Associate IAM OIDC Provider
+# AWS LOAD BALANCER CONTEOLLER SETUP.
+### 1.Associate IAM OIDC Provider 
 ```bash
 eksctl utils associate-iam-oidc-provider \
   --region ap-south-1 \
@@ -137,7 +137,7 @@ eksctl utils associate-iam-oidc-provider \
   --approve
 ```
 
-# Create Role
+### 2.Create Role
 Download the Official IAM Policy
 ```bash
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
@@ -166,7 +166,7 @@ Example:
 123456789012
 ```
 
-# create ROLE:
+### 4.create ROLE:
 
 choose custom policy and paste 
 ```bash
@@ -197,7 +197,7 @@ give ROLE name: AmazonEKSLoadBalancerControllerRole
 
 
 
-# Create Service Account (IRSA)
+### 5.Create Service Account (IRSA)
 
 Replace:
 
@@ -261,10 +261,10 @@ delete ingress then it delete alb, listerner rules, target groups.
 kubectl delete ingress microservice-ingress
 ```
 
-# OIDC (OpenID Connect)
+##### OIDC (OpenID Connect)
 Definition: <br>
 OIDC is a mechanism that allows an EKS pod to securely assume an AWS IAM role without storing AWS access keys inside the pod.
 
-# ServiceAccount
+##### ServiceAccount
 Definition: <br>
 A ServiceAccount is an identity for applications (pods) running inside Kubernetes.
