@@ -98,7 +98,7 @@ Verify:
 aws sts get-caller-identity
 ```
 # CLUSTER SETUP <br>
-# create cluster
+### create cluster
 ```bash
 eksctl create cluster \
   --name my-cluster \
