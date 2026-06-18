@@ -128,7 +128,7 @@ IMP:If you created the EKS cluster using eksctl, delete it with:
 ```bash
 eksctl delete cluster --name <cluster-name> --region ap-south-1
 ```
-# AWS LOAD BALANCER CONTEOLLER SETUP.
+# NGINX INGRESS CONTEOLLER SETUP.
 ### 1.Add Helm Repository
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
