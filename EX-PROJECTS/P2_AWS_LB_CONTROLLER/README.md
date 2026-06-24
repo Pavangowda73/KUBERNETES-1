@@ -137,12 +137,12 @@ eksctl utils associate-iam-oidc-provider \
   --approve
 ```
 
-### 2.Create Role
+### 2.Create Policy
 Download the Official IAM Policy
 ```bash
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
 ```
-Go to you aws ui and create ploicy (create using above link) <br>
+Go to you aws ui and create policy (create using above link) <br>
 POLICY name: AWSLoadBalancerControllerIAMPolicy <br>
 
 Get your OIDC URL
