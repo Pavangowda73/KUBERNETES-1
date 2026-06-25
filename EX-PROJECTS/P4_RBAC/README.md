@@ -155,7 +155,8 @@ metadata:
   namespace: dev
 subjects:
 - kind: User
-  name: pavan
+  name: arn:aws:iam::<account-id>:user/pavan
+  apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
   name: pod-reader-role
@@ -175,6 +176,7 @@ aws eks associate-access-policy \
   --cluster-name my-cluster \
   --principal-arn arn:aws:iam::<account-id>:user/pavan \
   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy
+  --access-scope type=namespace,namespaces=dev
 ```
 
 
