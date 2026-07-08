@@ -1,16 +1,4 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mysql-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-  - ReadWriteOnce
-  hostPath:
-    path: /volume/mysql
-root@ip-172-31-47-153:~/pavan# cat pvc.yaml 
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pvc
