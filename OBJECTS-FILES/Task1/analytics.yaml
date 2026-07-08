@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: analytics
+  namespace: techmart-dev
+spec:
+  serviceName: analytics-headless-service
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: analytics
+
+  template:
+    metadata:
+      labels:
+        app: analytics
+
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+
+        ports:
+        - containerPort: 80
+        
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
+
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
+
+        - name: DB_PORT
+          value: "3306"
+
+        - name: DB_NAME
+          value: techmart
+
+        volumeMounts:
+        - name: analytics-storage
+          mountPath: /usr/share/nginx/html 
+        - name: config-volume
+          mountPath: /app/config   
+      volumes:
+      - name: config-volume
+        configMap:
+          name: backend-config
+
+  volumeClaimTemplates:
+  - metadata:
+      name: analytics-storage
+    spec:
+      accessModes:
+      - ReadWriteOnce
+
+      storageClassName: ebs-sc-retain
+
+      resources:
+        requests:
+          storage: 5Gi
