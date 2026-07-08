@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+  namespace: techmart-dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: api
+    spec:
+      containers:
+      - name: backend-container
+        image: nginx:1.21
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "400m"
+            memory: "512Mi"
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: database-credentials-secret
+              key: mysql-user
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: database-credentials-secret
+              key: mysql-password
+        ports:
+        - containerPort: 80
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        volumeMounts:
+        - name: configuration-volume
+          mountPath: /etc/config
+          readOnly: true
+        - name: config-volume
+          mountPath: /etc/nginx/conf.d    
+      volumes:
+      - name: configuration-volume
+        configMap:
+          name: app-settings-config
+      - name: config-volume
+        configMap:
+          name: backend-nginx-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: techmart-dev
+spec:
+  selector:
+    app: backend
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 80
