@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-settings-config
+  namespace: techmart-dev
+data:
+  database-url: "mysql-db-0.mysql-headless-service.techmart-dev.svc.cluster.local:3306"
+  cache-config: |
+    redis.enabled=true
+    redis.timeout=3000
+    cache.ttl=3600
+  api-settings: |
+    api.version=v1
+    api.timeout=30s
+    api.rate-limit=100
