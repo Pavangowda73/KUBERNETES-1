@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: operator-binding
+  namespace: pavan-ns-hju2026
+subjects:
+- kind: ServiceAccount
+  name: cloudvault-operator
+  namespace: pavan-ns-hju2026
+roleRef:
+  kind: Role
+  name: operator-role
+  apiGroup: rbac.authorization.k8s.io
