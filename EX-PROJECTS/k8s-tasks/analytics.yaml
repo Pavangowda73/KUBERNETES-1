@@ -20,7 +20,7 @@ metadata:
   namespace: pavan-ns-hju2026
 spec:
   serviceName: analytics-headless-service
-  replicas: 1 
+  replicas: 3
   selector:
     matchLabels:
       app: analytics
@@ -30,16 +30,21 @@ spec:
         app: analytics
     spec:
       nodeSelector:
-        name: pavan02
-        kubernetes.io/hostname: ip-10-0-8-236.ap-south-1.compute.internal
+        name: pavan01
+        kubernetes.io/hostname: ip-10-0-6-72.ap-south-1.compute.internal
       containers:
       - name: analytics
         image: nginx:1.22
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
         env:
-        - name: DB_HOST
-          value: mysql-headless-service
         - name: DB_PORT
           value: "3306"
         - name: DB_NAME
@@ -57,6 +62,12 @@ spec:
         volumeMounts:
         - name: analytics-data
           mountPath: /data
+        - name: config-volume
+          mountPath: /app/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: backend-config
   volumeClaimTemplates:
   - metadata:
       name: analytics-data
