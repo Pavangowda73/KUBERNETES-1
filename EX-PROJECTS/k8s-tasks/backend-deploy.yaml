@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+  namespace: pavan-ns-hju2026
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: api
+    spec:
+      nodeSelector:
+        name: pavan01
+        kubernetes.io/hostname: ip-10-0-6-72.ap-south-1.compute.internal
+      containers:
+      - name: backend
+        image: nginx:1.22
+        ports:
+        - containerPort: 80
+
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "400m"
+            memory: "512Mi"
+
+        env:
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_NAME
+          value: cloudvault
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
+
+        volumeMounts:
+        - name: app-config
+          mountPath: /etc/config
+
+      volumes:
+      - name: app-config
+        configMap:
+          name: backend-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: pavan-ns-hju2026
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 8080
+    targetPort: 80
+  type: ClusterIP
