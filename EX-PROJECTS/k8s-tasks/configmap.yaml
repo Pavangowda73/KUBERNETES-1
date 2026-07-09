@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: pavan-ns-hju2026
+
+data:
+  database-url: mysql-headless-service
+  cache-config: redis-disabled
+  api-settings: |
+    LOG_LEVEL=INFO
+    APP_NAME=TechMart
+    API_VERSION=v1
