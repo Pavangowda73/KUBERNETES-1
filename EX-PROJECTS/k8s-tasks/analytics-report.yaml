@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: analytics-report
+  namespace: pavan-ns-hju2026
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: cloudvault-operator
+          restartPolicy: OnFailure
+          containers:
+          - name: analytics
+            image: busybox
+            env:
+            - name: ANALYTICS_HOST
+              value: cloudvault-analytics-0.analytics
+            command: ["sh","-c","echo Generating analytics report"]
