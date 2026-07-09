@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-headless-service
+  namespace: pavan-ns-hju2026
+spec:
+  clusterIP: None
+  selector:
+    app: analytics
+  ports:
+  - port: 8000
+    targetPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cloudvault-analytics
+  namespace: pavan-ns-hju2026
+spec:
+  serviceName: analytics-headless-service
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: analytics
+  template:
+    metadata:
+      labels:
+        app: analytics
+    spec:
+      nodeSelector:
+        name: pavan02
+        kubernetes.io/hostname: ip-10-0-8-236.ap-south-1.compute.internal
+      containers:
+      - name: analytics
+        image: nginx:1.22
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: mysql-headless-service
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_NAME
+          value: cloudvault
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
+        volumeMounts:
+        - name: analytics-data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: analytics-data
+    spec:
+      storageClassName: pavan-ebs-sc-retain
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
