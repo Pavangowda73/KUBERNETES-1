@@ -1,0 +1,15 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: pavan-ebs-sc-retain
+  namespace: pavan-ns-hju2026
+provisioner: ebs.csi.aws.com
+
+parameters:
+  type: gp3
+
+allowVolumeExpansion: true
+
+volumeBindingMode: WaitForFirstConsumer
+
+reclaimPolicy: Retain
