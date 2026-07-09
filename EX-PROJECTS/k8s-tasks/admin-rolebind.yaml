@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: admin-binding
+  namespace: pavan-ns-hju2026
+subjects:
+- kind: ServiceAccount
+  name: cloudvault-admin
+  namespace: pavan-ns-hju2026
+roleRef:
+  kind: Role
+  name: admin-role
+  apiGroup: rbac.authorization.k8s.io
